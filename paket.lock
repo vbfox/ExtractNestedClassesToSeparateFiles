@@ -1,0 +1,133 @@
+NUGET
+  remote: https://nuget.org/api/v2
+  specs:
+    FSharp.Core (4.0.0.1)
+    Microsoft.CodeAnalysis (1.0.0)
+      Microsoft.CodeAnalysis.CSharp.Workspaces (1.0.0)
+      Microsoft.CodeAnalysis.VisualBasic.Workspaces (1.0.0)
+    Microsoft.CodeAnalysis.Analyzers (1.0.0)
+    Microsoft.CodeAnalysis.Common (1.0.0)
+      Microsoft.CodeAnalysis.Analyzers (1.0.0)
+      System.Collections.Immutable (>= 1.1.36)
+      System.Reflection.Metadata (>= 1.0.21)
+    Microsoft.CodeAnalysis.CSharp (1.0.0)
+      Microsoft.CodeAnalysis.Common (1.0.0)
+    Microsoft.CodeAnalysis.CSharp.Workspaces (1.0.0)
+      Microsoft.CodeAnalysis.CSharp (1.0.0)
+      Microsoft.CodeAnalysis.Workspaces.Common (1.0.0)
+    Microsoft.CodeAnalysis.VisualBasic (1.0.0)
+      Microsoft.CodeAnalysis.Common (>= 1.0.0)
+    Microsoft.CodeAnalysis.VisualBasic.Workspaces (1.0.0)
+      Microsoft.CodeAnalysis.VisualBasic (1.0.0)
+      Microsoft.CodeAnalysis.Workspaces.Common (1.0.0)
+    Microsoft.CodeAnalysis.Workspaces.Common (1.0.0)
+      Microsoft.CodeAnalysis.Common (1.0.0)
+      Microsoft.Composition (>= 1.0.27)
+    Microsoft.Composition (1.0.30)
+    System.Collections (4.0.10) - framework: dnxcore50
+      System.Diagnostics.Debug (>= 4.0.0) - framework: dnxcore50
+      System.Resources.ResourceManager (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.20) - framework: dnxcore50
+      System.Runtime.Extensions (>= 4.0.0) - framework: dnxcore50
+      System.Threading (>= 4.0.0) - framework: dnxcore50
+    System.Collections.Immutable (1.1.37)
+      System.Collections (>= 4.0.0) - framework: dnxcore50
+      System.Diagnostics.Debug (>= 4.0.0) - framework: dnxcore50
+      System.Globalization (>= 4.0.0) - framework: dnxcore50
+      System.Linq (>= 4.0.0) - framework: dnxcore50
+      System.Resources.ResourceManager (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+      System.Runtime.Extensions (>= 4.0.0) - framework: dnxcore50
+      System.Threading (>= 4.0.0) - framework: dnxcore50
+    System.Diagnostics.Contracts (4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+    System.Diagnostics.Debug (4.0.10) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+    System.Globalization (4.0.10) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+    System.IO (4.0.10)
+      System.Globalization (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.20) - framework: dnxcore50
+      System.Text.Encoding (>= 4.0.0) - framework: dnxcore50
+      System.Text.Encoding (>= 4.0.10) - framework: dnxcore50
+      System.Text.Encoding.Extensions (>= 4.0.0) - framework: dnxcore50
+      System.Threading (>= 4.0.0) - framework: dnxcore50
+      System.Threading.Tasks (>= 4.0.0) - framework: dnxcore50
+    System.Linq (4.0.0) - framework: dnxcore50
+      System.Collections (>= 4.0.10) - framework: dnxcore50
+      System.Diagnostics.Debug (>= 4.0.10) - framework: dnxcore50
+      System.Resources.ResourceManager (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.20) - framework: dnxcore50
+      System.Runtime.Extensions (>= 4.0.10) - framework: dnxcore50
+    System.Private.Uri (4.0.0) - framework: dnxcore50
+    System.Reflection (4.0.10)
+      System.IO (>= 4.0.0) - framework: dnxcore50
+      System.Reflection.Primitives (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.20) - framework: dnxcore50
+    System.Reflection.Extensions (4.0.0)
+      System.Diagnostics.Debug (>= 4.0.10) - framework: dnxcore50
+      System.Reflection (>= 4.0.0) - framework: dnxcore50
+      System.Reflection (>= 4.0.10) - framework: dnxcore50
+      System.Reflection.Primitives (>= 4.0.0) - framework: dnxcore50
+      System.Reflection.TypeExtensions (>= 4.0.0) - framework: dnxcore50
+      System.Resources.ResourceManager (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.20) - framework: dnxcore50
+      System.Runtime.Extensions (>= 4.0.10) - framework: dnxcore50
+    System.Reflection.Metadata (1.1.0)
+      System.Collections (>= 4.0.0)
+      System.Collections.Immutable (>= 1.1.37)
+      System.Diagnostics.Debug (>= 4.0.0)
+      System.IO (>= 4.0.0)
+      System.Reflection (>= 4.0.0)
+      System.Reflection.Extensions (>= 4.0.0)
+      System.Reflection.Primitives (>= 4.0.0)
+      System.Resources.ResourceManager (>= 4.0.0)
+      System.Runtime (>= 4.0.0)
+      System.Runtime.Extensions (>= 4.0.0)
+      System.Runtime.InteropServices (>= 4.0.0)
+      System.Text.Encoding (>= 4.0.0)
+      System.Text.Encoding.Extensions (>= 4.0.0)
+      System.Threading (>= 4.0.0)
+    System.Reflection.Primitives (4.0.0)
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+      System.Threading (>= 4.0.0) - framework: dnxcore50
+    System.Reflection.TypeExtensions (4.0.0) - framework: dnxcore50
+      System.Diagnostics.Contracts (>= 4.0.0) - framework: dnxcore50
+      System.Diagnostics.Debug (>= 4.0.10) - framework: dnxcore50
+      System.Linq (>= 4.0.0) - framework: dnxcore50
+      System.Reflection (>= 4.0.0) - framework: dnxcore50
+      System.Reflection (>= 4.0.10) - framework: dnxcore50
+      System.Reflection.Primitives (>= 4.0.0) - framework: dnxcore50
+      System.Resources.ResourceManager (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.20) - framework: dnxcore50
+      System.Runtime.Extensions (>= 4.0.10) - framework: dnxcore50
+    System.Resources.ResourceManager (4.0.0) - framework: dnxcore50
+      System.Globalization (>= 4.0.0) - framework: dnxcore50
+      System.Reflection (>= 4.0.0) - framework: dnxcore50
+      System.Reflection (>= 4.0.10) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.20) - framework: dnxcore50
+    System.Runtime (4.0.20) - framework: dnxcore50
+      System.Private.Uri (>= 4.0.0) - framework: dnxcore50
+    System.Runtime.Extensions (4.0.10) - framework: dnxcore50
+      System.Runtime (>= 4.0.20) - framework: dnxcore50
+    System.Runtime.Handles (4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+    System.Runtime.InteropServices (4.0.20)
+      System.Reflection (>= 4.0.0) - framework: dnxcore50
+      System.Reflection.Primitives (>= 4.0.0) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+      System.Runtime.Handles (>= 4.0.0) - framework: dnxcore50
+    System.Text.Encoding (4.0.10)
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+    System.Text.Encoding.Extensions (4.0.10)
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+      System.Text.Encoding (>= 4.0.10) - framework: dnxcore50
+    System.Threading (4.0.10) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50
+      System.Threading.Tasks (>= 4.0.0) - framework: dnxcore50
+    System.Threading.Tasks (4.0.10) - framework: dnxcore50
+      System.Runtime (>= 4.0.0) - framework: dnxcore50

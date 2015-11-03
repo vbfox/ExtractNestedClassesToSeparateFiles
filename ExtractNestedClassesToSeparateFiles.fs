@@ -1,4 +1,4 @@
-open Microsoft.CodeAnalysis
+﻿open Microsoft.CodeAnalysis
 open Microsoft.CodeAnalysis.CSharp
 open Microsoft.CodeAnalysis.CSharp.Syntax
 open Microsoft.CodeAnalysis.MSBuild
