@@ -121,16 +121,17 @@ let splitNestedThings (root:SyntaxNode) (document:Document) (projectId:ProjectId
                 solution <- cleanDoc.Project.Solution
                 toRemove <- nestedType :: toRemove
 
-        let nodesToRemove = toRemove |> Seq.map(fun x -> (x :> SyntaxNode))
-        let modifiedRoot = root.RemoveNodes(nodesToRemove, SyntaxRemoveOptions.AddElasticMarker)
+        if not toRemove.IsEmpty then
+            let nodesToRemove = toRemove |> Seq.map(fun x -> (x :> SyntaxNode))
+            let modifiedRoot = root.RemoveNodes(nodesToRemove, SyntaxRemoveOptions.AddElasticMarker)
         
-        let replacement = fun (n : UsingDirectiveSyntax) (_ :UsingDirectiveSyntax) -> addAnnotations [Simplifier.Annotation] n :> SyntaxNode
-        let rootWithAnnotatedUsings = modifiedRoot.ReplaceNodes(usings |> toImmutableList,  new System.Func<_, _, _>(replacement)) 
+            let replacement = fun (n : UsingDirectiveSyntax) (_ :UsingDirectiveSyntax) -> addAnnotations [Simplifier.Annotation] n :> SyntaxNode
+            let rootWithAnnotatedUsings = modifiedRoot.ReplaceNodes(usings |> toImmutableList,  new System.Func<_, _, _>(replacement)) 
 
-        solution <- solution.WithDocumentSyntaxRoot(document.Id, rootWithAnnotatedUsings)
+            solution <- solution.WithDocumentSyntaxRoot(document.Id, rootWithAnnotatedUsings)
 
-        let! cleanDoc = cleanup (solution.GetDocument(document.Id))
-        solution <- cleanDoc.Project.Solution
+            let! cleanDoc = cleanup (solution.GetDocument(document.Id))
+            solution <- cleanDoc.Project.Solution
 
         return solution
 }
