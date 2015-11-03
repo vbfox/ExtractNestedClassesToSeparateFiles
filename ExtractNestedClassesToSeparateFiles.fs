@@ -1,8 +1,11 @@
 ﻿open Microsoft.CodeAnalysis
+open Microsoft.CodeAnalysis.Simplification
 open Microsoft.CodeAnalysis.CSharp
 open Microsoft.CodeAnalysis.CSharp.Syntax
 open Microsoft.CodeAnalysis.MSBuild
 open Microsoft.CodeAnalysis.Formatting
+open Microsoft.CodeAnalysis.Diagnostics
+open System.Collections.Immutable
 open System.IO
 
 module FluentRoslynLite =
@@ -18,8 +21,27 @@ module FluentRoslynLite =
         (^T : (member AddModifiers : SyntaxToken array -> ^T) (input, tokens))
     let class' (name:string) = SyntaxFactory.ClassDeclaration(name)
     let namespace' (name:string) = SyntaxFactory.NamespaceDeclaration(identifier name)
+    let addAnnotations annotations node = node.WithAdditionalAnnotations(annotations |> Seq.toArray)
+    let addTriviaAfter (trivia : SyntaxTrivia seq) (node : #SyntaxNode) =
+        let newTrivia = Seq.concat [node.GetTrailingTrivia() :> SyntaxTrivia seq; trivia] |> Seq.toArray
+        node.WithTrailingTrivia(newTrivia)
+    let addTriviaSAfter (trivia : string) (node : #SyntaxNode) =
+        let trivia = SyntaxFactory.ParseTrailingTrivia(trivia)
+        addTriviaAfter trivia node
+    let addTriviaBefore (trivia : SyntaxTrivia seq) (node : #SyntaxNode) =
+        let newTrivia = Seq.concat [trivia; node.GetLeadingTrivia() :> SyntaxTrivia seq] |> Seq.toArray
+        node.WithLeadingTrivia(newTrivia)
+    let addTriviaSBefore (trivia : string) (node : #SyntaxNode) =
+        let trivia = SyntaxFactory.ParseLeadingTrivia(trivia)
+        addTriviaBefore trivia node
+    let toImmutableList seq = ImmutableList.Empty.AddRange(seq)
 
 open FluentRoslynLite
+
+let header = """// Copyright (c) to owners found in https://github.com/AArnott/pinvoke/blob/master/COPYRIGHT.md. All rights reserved.
+// Licensed under the MIT license. See LICENSE.txt file in the project root for full license information.
+
+"""
 
 let ofType<'a, 'T> (seq : 'a seq) = 
     seq
@@ -59,7 +81,16 @@ let makeExtractedFile ns usings (rootClass:ClassDeclarationSyntax) nestedType =
                     |> (fun c -> c.WithLeadingTrivia(getDoc nestedType))
                 ]
         ]
-    |> (fun f -> f.WithAdditionalAnnotations(Formatter.Annotation))
+    |> addAnnotations [ Formatter.Annotation ]
+    |> addTriviaSAfter "\r\n\r\n"
+    |> addTriviaSBefore header
+
+let formatDoc doc = async { return! !! Formatter.FormatAsync(doc) }
+let reduceDoc doc = async { return! !! Simplifier.ReduceAsync(doc) }
+let cleanup doc = async {
+    let! formatted = formatDoc doc
+    return! reduceDoc formatted
+}
 
 let splitNestedThings (root:SyntaxNode) (document:Document) (projectId:ProjectId) (solution:Solution) = async {
     let classes = root.DescendantNodesAndSelf() |> ofType<_,ClassDeclarationSyntax> |> List.ofSeq
@@ -68,7 +99,10 @@ let splitNestedThings (root:SyntaxNode) (document:Document) (projectId:ProjectId
         return solution
     else
         let ns = (nsNodes.Head.Name :?> IdentifierNameSyntax).Identifier.Text
-        let usings = root.DescendantNodesAndSelf() |> ofType<_,UsingDirectiveSyntax> |> List.ofSeq
+        let usings =
+            root.DescendantNodesAndSelf()
+            |> ofType<_,UsingDirectiveSyntax>
+        let usingsForNewFiles = usings |> Seq.map (addAnnotations [Simplifier.Annotation]) |> List.ofSeq
         let rootClass = classes.Head
         let nested = rootClass.ChildNodes() |> ofType<_,BaseTypeDeclarationSyntax> |> List.ofSeq
 
@@ -80,18 +114,25 @@ let splitNestedThings (root:SyntaxNode) (document:Document) (projectId:ProjectId
         for (nestedType, expectedFileName) in expectedFileNames do
             if fileName <> expectedFileName then
                 printfn "Extracting %s from %s" expectedFileName fileName
-                let newFile = makeExtractedFile ns usings rootClass nestedType
+                let newFile = makeExtractedFile ns usingsForNewFiles rootClass nestedType
                 let currentProject = solution.GetProject(projectId)
                 let doc = currentProject.AddDocument(expectedFileName, newFile)
-                let! formattedDoc = !! Formatter.FormatAsync(doc)
-
-                solution <- formattedDoc.Project.Solution
+                let! cleanDoc = cleanup doc
+                solution <- cleanDoc.Project.Solution
                 toRemove <- nestedType :: toRemove
 
         let nodesToRemove = toRemove |> Seq.map(fun x -> (x :> SyntaxNode))
         let modifiedRoot = root.RemoveNodes(nodesToRemove, SyntaxRemoveOptions.AddElasticMarker)
+        
+        let replacement = fun (n : UsingDirectiveSyntax) (_ :UsingDirectiveSyntax) -> addAnnotations [Simplifier.Annotation] n :> SyntaxNode
+        let rootWithAnnotatedUsings = modifiedRoot.ReplaceNodes(usings |> toImmutableList,  new System.Func<_, _, _>(replacement)) 
 
-        return solution.WithDocumentSyntaxRoot(document.Id, modifiedRoot)
+        solution <- solution.WithDocumentSyntaxRoot(document.Id, rootWithAnnotatedUsings)
+
+        let! cleanDoc = cleanup (solution.GetDocument(document.Id))
+        solution <- cleanDoc.Project.Solution
+
+        return solution
 }
 
 let splitSolutionNestedThings (solution:Solution) = async {
@@ -115,7 +156,7 @@ let main _ =
 
     async {
         printf "Loading solution... "
-        let! solution = !! ws.OpenSolutionAsync(@"E:\Code\pinvoke\src\PInvoke.sln")
+        let! solution = !! ws.OpenSolutionAsync(@"C:\Code\pinvoke\src\PInvoke.sln")
         printfn "Done."
 
         let! newSolution = splitSolutionNestedThings solution
